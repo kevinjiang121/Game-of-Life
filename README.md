@@ -12,3 +12,6 @@ If a square that is dead can be repopulated with life it has exactly 3 neighbors
 
 # How to Run
 Run the GameOfLife.py script located under the Game-of-Life directory.
+
+# Status
+Project is currently incomplete.
