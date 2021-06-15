@@ -11,7 +11,7 @@ class SetGame:
         print("")
         q = "y"  # stops loops for coordinates if answer is not y
         while q == "y":  # ask for coordinates, must be in the form +int +int. Other forms will be rejected
-            ans = input("Enter coordinates for where life should be (ex: 2 2): ")
+            ans = input("Enter coordinates for where life should be (ex: 2 2, 1-10): ")
             ans_array = ans.split()
             ans_length = len(ans_array)
             if ans_length == 2:
@@ -20,10 +20,11 @@ class SetGame:
                     try:
                         y = int(ans_array[1])
                         if 0 < x < 11 and 0 < y < 11:
-                            g[x, y] = 1
+                            g[x-1, y-1] = 1
                             print(g)
                             print("")
                             q = input("Do you want enter another coordinate (y/n): ")
+                            print("")
                     except ValueError:
                         print("Integers must be between 1-10!")
                 except ValueError:
