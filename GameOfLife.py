@@ -6,11 +6,13 @@
 # If an alive square have 4 or more neighbors, it dies
 # If a dead square have exactly 3 neighbors, it lives
 import numpy as np
+import tkinter as tk
 from SetGame import SetGame
 from PlayGame import PlayGame
 
 g = np.zeros((10, 10), dtype=int)
 g_temp = np.zeros((10, 10), dtype=int)
+root = tk.Tk()
 kill = 'y'
 
 
@@ -38,11 +40,41 @@ def continue_game():
     return kill_game
 
 
+def next_loop():
+    global g
+    g = play_game()
+    for r in range(10):
+        for c in range(10):
+            tk.Label(root, text='%d' % (g[r, c]),
+                     borderwidth=1).grid(row=r, column=c)
+
+
+def play_game():
+    g_l = get_g()
+    play = PlayGame(g_l, g_temp)
+    game = play.play_game()
+    return game
+
+
+def get_g():
+    return g
+
+
 class GameOfLife:
+    global g
+    root.geometry('500x500')
+    btn = tk.Button(root, text='Next Life Cycle', bd='5', command=next_loop)
+    btn_close = tk.Button(root, text='Close', bd='5', command=root.destroy)
+
     while kill == "y":  # repeats game if user does not quit
         clear_board()
         game = SetGame()
-        g = game.createBoard()
-        play = PlayGame(g, g_temp)
-        play.play_game()
+        g = game.create_board()
+        for r in range(10):
+            for c in range(10):
+                tk.Label(root, text='%d' % (g[r, c]),
+                         borderwidth=1).grid(row=r, column=c)
+        btn.grid(row=11, column=11)
+        btn_close.grid(row=11, column=12)
+        root.mainloop()
         kill = continue_game()
