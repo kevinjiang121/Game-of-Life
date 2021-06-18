@@ -12,15 +12,11 @@ class PlayGame:
         self.g_temp = game_temp
 
     def play_game(self):
-        repeat = input("Number of Iterations for the Game of Life: ")  # number of lifecycles
-        repeat_int = int(repeat)
-        for i in range(repeat_int):
-            self.change_board()
-            for x in range(10):
-                for y in range(10):
-                    self.g[x, y] = self.g_temp[x, y]  # copies g_temp over to g
-            print("")
-            print(self.g)
+        self.change_board()
+        for x in range(10):
+            for y in range(10):
+                self.g[x, y] = self.g_temp[x, y]  # copies g_temp over to g
+        return self.g
 
     def change_board(self):
         neighbor = NeighborhoodScript(self.g)
