@@ -72,7 +72,6 @@ def insert_tile():
                 y = int(give_life[1])
                 if 0 < x < 11 and 0 < y < 11:
                     g[x - 1, y - 1] = 1
-                    print(g)
             except ValueError:
                 print("Integers must be between 1-10!")
         except ValueError:
