@@ -8,13 +8,16 @@
 
 import numpy as np
 import tkinter as tk
+from time import *
 from PlayGame import PlayGame
 
 g = np.zeros((10, 10), dtype=int)
 g_temp = np.zeros((10, 10), dtype=int)
 
 root = tk.Tk()
+root.title('Game of Life')
 entry = tk.Entry()
+play = -1
 
 
 def clear_board():
@@ -44,8 +47,8 @@ def continue_game():
 
 def next_loop():
     global g
-    play = PlayGame(g, g_temp)
-    g = play.play_game()
+    plays = PlayGame(g, g_temp)
+    g = plays.play_game()
     display_game()
 
 
@@ -58,6 +61,17 @@ def display_game():
                 tile = tk.Canvas(root, height=50, width=50, bg="white")
             tile.grid(row=r, column=c)
 
+
+def auto_play():
+    global play
+    play = play * -1
+    keep_playing()
+
+def keep_playing():
+    global play
+    if play>0:
+        next_loop()
+        root.after(1000, keep_playing)
 
 def insert_tile():
     global g
@@ -81,18 +95,18 @@ def insert_tile():
 
 class GameOfLife:
     global entry
-    root.geometry('1980x1080')
+    root.geometry('550x700')
     enter_label = tk.Label(root, text="Please enter a coordinate from 1-10 (ex:2 2)")
     btn = tk.Button(root, text='Next Life Cycle', bd='10', command=next_loop)
-    btn_close = tk.Button(root, text='Close', bd='10', command=root.destroy)
     btn_clear = tk.Button(root, text='Clear Board', bd='10', command=clear_board)
+    btn_auto = tk.Button(root, text='Auto', bd='10', command=auto_play)
     entry = tk.Entry(root)
     btn_insert = tk.Button(root, text='Insert', bd='10', command=insert_tile)
     display_game()
-    btn.grid(row=11, column=12)
-    btn_close.grid(row=11, column=13)
-    btn_clear.grid(row=11, column=14)
-    enter_label.grid(row=12, column=11)
-    btn_insert.grid(row=13, column=12)
-    entry.grid(row=13, column=11)
+    btn_auto.place(x=400, y=550)
+    btn.place(x=400, y=600)
+    btn_clear.place(x=400, y=650)
+    enter_label.place(x=85, y=565)
+    entry.place(x=100, y=600)
+    btn_insert.place(x=230, y=585)
     root.mainloop()
