@@ -8,7 +8,6 @@
 
 import numpy as np
 import tkinter as tk
-from time import *
 from PlayGame import PlayGame
 
 g = np.zeros((10, 10), dtype=int)
@@ -67,11 +66,13 @@ def auto_play():
     play = play * -1
     keep_playing()
 
+
 def keep_playing():
     global play
-    if play>0:
+    if play > 0:
         next_loop()
         root.after(1000, keep_playing)
+
 
 def insert_tile():
     global g
