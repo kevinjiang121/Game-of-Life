@@ -1,8 +1,9 @@
 import numpy as np
 from NeighborhoodScript import NeighborhoodScript
 
-g = np.zeros((10, 10), dtype=int)
-g_temp = np.zeros((10, 10), dtype=int)
+N = 100
+g = np.zeros((N, N), dtype=int)
+g_temp = np.zeros((N, N), dtype=int)
 
 
 class PlayGame:
@@ -13,15 +14,15 @@ class PlayGame:
 
     def play_game(self):
         self.change_board()
-        for x in range(10):
-            for y in range(10):
+        for x in range(N):
+            for y in range(N):
                 self.g[x, y] = self.g_temp[x, y]  # copies g_temp over to g
         return self.g
 
     def change_board(self):
         neighbor = NeighborhoodScript(self.g)
-        for x in range(10):
-            for y in range(10):
+        for x in range(N):
+            for y in range(N):
                 if self.g[x, y] == 0:  # case for when square is dead
                     game = neighbor.neighbors(x, y)
                     if game == 3:

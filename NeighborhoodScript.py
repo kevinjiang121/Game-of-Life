@@ -1,6 +1,7 @@
 import numpy as np
 
-g = np.zeros((10, 10), dtype=int)
+N = 100
+g = np.zeros((N, N), dtype=int)
 
 
 class NeighborhoodScript:
@@ -12,19 +13,19 @@ class NeighborhoodScript:
         count = 0
         if x == 0 and y == 0:
             count += self.check_00(x, y)
-        elif x == 0 and y == 9:
+        elif x == 0 and y == N - 1:
             count += self.check_10(x, y)
-        elif x == 9 and y == 0:
+        elif x == N - 1 and y == 0:
             count += self.check_01(x, y)
-        elif x == 9 and y == 9:
+        elif x == N - 1 and y == N - 1:
             count += self.check_11(x, y)
         elif x == 0:
             count += self.check_x0(x, y)
-        elif x == 9:
+        elif x == N - 1:
             count += self.check_x1(x, y)
         elif y == 0:
             count += self.check_0y(x, y)
-        elif y == 9:
+        elif y == N - 1:
             count += self.check_1y(x, y)
         else:
             count += self.check(x, y)

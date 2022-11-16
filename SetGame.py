@@ -1,6 +1,7 @@
 import numpy as np
 
-g = np.zeros((10, 10), dtype=int)
+N = 100
+g = np.zeros((N, N), dtype=int)
 
 
 class SetGame:
@@ -20,7 +21,7 @@ class SetGame:
                     x = int(ans_array[0])
                     try:
                         y = int(ans_array[1])
-                        if 0 < x < 11 and 0 < y < 11:
+                        if 0 < x < N + 1 and 0 < y < N + 1:
                             g[x - 1, y - 1] = 1
                             print(g)
                             print("")
