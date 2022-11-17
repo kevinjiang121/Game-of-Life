@@ -8,34 +8,29 @@
  If a dead square have exactly 3 neighbors, it lives
 """
 import sys
-
+import math
 import numpy as np
 from PlayGame import PlayGame
 import pygame as pg
 
-N = 100
+N = int((1080-100)/20)
+M = int(1920/20)
 ALIVE = (0, 0, 0)
 DEAD = (255, 255, 255)
 HEIGHT = 1080
-WIDTH = 1980
+WIDTH = 1920
 
-g = np.zeros((N, N), dtype=int)
-g_temp = np.zeros((N, N), dtype=int)
+g = np.zeros((N, M), dtype=int)
+g_temp = np.zeros((N, M), dtype=int)
 
 play = -1
-
-
-def clear_board():
-    for x in range(N):
-        for y in range(N):
-            g[x, y] = 0
-            g_temp[x, y] = 0
 
 
 def next_loop():
     global g
     plays = PlayGame(g, g_temp)
     g = plays.play_game()
+
 
 def auto_play():
     global play
@@ -49,42 +44,31 @@ def keep_playing():
         next_loop()
 
 
-def insert_tile():
-    global g
-    global entry
-    give = entry.get()
-    give_life = give.split()
-    ans_length = len(give_life)
-    if ans_length == 2:
-        try:
-            x = int(give_life[0])
-            try:
-                y = int(give_life[1])
-                if 0 < x < N + 1 and 0 < y < N + 1:
-                    g[x - 1, y - 1] = 1
-            except ValueError:
-                print("Integers must be between 1-10!")
-        except ValueError:
-            print("Integers must be between 1-10!")
-
-
 class GameOfLife:
-    global entry
     rects = []
     grid = []
+    rectPos = [0, 0]
     pg.init()
     SCREEN = pg.display.set_mode((WIDTH, HEIGHT))
     CLOCK = pg.time.Clock()
     SCREEN.fill(DEAD)
     blockSize = 20
+
+    clear = pg.Rect(0, HEIGHT - 100, 660, 100)
+    next = pg.Rect(660, HEIGHT - 100, 660, 100)
+    auto = pg.Rect(1320, HEIGHT - 100, 660, 100)
+    pg.draw.rect(SCREEN, (0, 0, 0, 0), clear, 3)
+    pg.draw.rect(SCREEN, (0, 0, 0, 0), next, 3)
+    pg.draw.rect(SCREEN, (0, 0, 0, 0), auto, 3)
+
     for x in range(0, WIDTH, blockSize):
         for y in range(0, HEIGHT - 100, blockSize):
             rect = pg.Rect(x, y, blockSize, blockSize)
             pg.draw.rect(SCREEN, (0, 0, 0, 0), rect, 1)
             rects.append(rect)
 
-    widthBlocks = int(WIDTH/blockSize)
-    heightBlocks = int((HEIGHT-100) / blockSize)
+    widthBlocks = int(WIDTH / blockSize)
+    heightBlocks = int((HEIGHT - 100) / blockSize)
 
     for i in range(widthBlocks):
         grid.append([])
@@ -92,13 +76,39 @@ class GameOfLife:
     for i in range(len(rects)):
         grid[i % heightBlocks].append(rects[i])
 
-    pg.draw.rect(SCREEN, (ALIVE), grid[1][1], 20)
-
     while True:
         for event in pg.event.get():
+            if event.type == pg.MOUSEBUTTONDOWN:
+                rectPos = pg.mouse.get_pos()
+
+            if rectPos[1] < HEIGHT - 100:
+                if event.type == pg.MOUSEBUTTONUP:
+                    pg.draw.rect(SCREEN, ALIVE, grid[math.floor(rectPos[1] / 20)][math.floor(rectPos[0] / 20)], 20)
+                    g[math.floor(rectPos[1] / 20)][math.floor(rectPos[0]/20)] = 1
+
+            if rectPos[1] > HEIGHT - 100 and rectPos[0] < 660:
+                if event.type == pg.MOUSEBUTTONUP:
+                    SCREEN.fill(DEAD)
+                    for i in range(len(rects)):
+                        pg.draw.rect(SCREEN, ALIVE, rects[i], 1)
+                    pg.draw.rect(SCREEN, ALIVE, clear, 3)
+                    pg.draw.rect(SCREEN, ALIVE, next, 3)
+                    pg.draw.rect(SCREEN, ALIVE, auto, 3)
+
+            if rectPos[1] > HEIGHT - 100 and 660 < rectPos[0] <= 1320:
+                if event.type == pg.MOUSEBUTTONUP:
+                    game = PlayGame(g, g_temp)
+                    g = game.play_game()
+                    for i in range(len(g)):
+                        for j in range(len(g[i])):
+                            if g[i][j] == 1:
+                                pg.draw.rect(SCREEN, DEAD, grid[i][j], 20)
+                                pg.draw.rect(SCREEN, ALIVE, grid[i][j], 20)
+                            if g[i][j] == 0:
+                                pg.draw.rect(SCREEN, DEAD, grid[i][j], 20)
+                                pg.draw.rect(SCREEN, ALIVE, grid[i][j], 1)
             if event.type == pg.QUIT:
                 pg.quit()
                 sys.exit(0)
 
         pg.display.update()
-
