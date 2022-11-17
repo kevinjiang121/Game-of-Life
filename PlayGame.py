@@ -1,7 +1,8 @@
 import numpy as np
 from NeighborhoodScript import NeighborhoodScript
 
-N = 100
+N = int((1080-100)/20)
+M = int(1920/20)
 g = np.zeros((N, N), dtype=int)
 g_temp = np.zeros((N, N), dtype=int)
 
