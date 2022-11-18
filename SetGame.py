@@ -1,7 +1,8 @@
 import numpy as np
 
-N = 100
-g = np.zeros((N, N), dtype=int)
+N = int((1080-100)/20)
+M = int(1940/20)
+g = np.zeros((N, M), dtype=int)
 
 
 class SetGame:
@@ -9,29 +10,4 @@ class SetGame:
         pass
 
     def create_board(self):
-        print(g)
-        print("")
-        q = "y"  # stops loops for coordinates if answer is not y
-        while q == "y":  # ask for coordinates, must be in the form +int +int. Other forms will be rejected
-            ans = input("Enter coordinates for where life should be (ex: 2 2, 1-10): ")
-            ans_array = ans.split()
-            ans_length = len(ans_array)
-            if ans_length == 2:
-                try:
-                    x = int(ans_array[0])
-                    try:
-                        y = int(ans_array[1])
-                        if 0 < x < N + 1 and 0 < y < N + 1:
-                            g[x - 1, y - 1] = 1
-                            print(g)
-                            print("")
-                            q = input("Do you want enter another coordinate (y/n): ")
-                            print("")
-                    except ValueError:
-                        print("Integers must be between 1-10!")
-                except ValueError:
-                    print("Integers must be between 1-10!")
-            else:
-                print("Only 2 coordinates are allowed. Please try again.")
-        print("")
-        return g
+        pass
