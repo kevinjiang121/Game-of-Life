@@ -1,7 +1,7 @@
 import numpy as np
 
 N = int((1080-100)/20)
-M = int(1920/20)
+M = int(1940/20)
 g = np.zeros((N, M), dtype=int)
 
 
@@ -14,11 +14,11 @@ class NeighborhoodScript:
         count = 0
         if x == 0 and y == 0:
             count += self.check_00(x, y)
-        elif x == 0 and y == N - 1:
+        elif x == 0 and y == M - 1:
             count += self.check_10(x, y)
         elif x == N - 1 and y == 0:
             count += self.check_01(x, y)
-        elif x == N - 1 and y == N - 1:
+        elif x == N - 1 and y == M - 1:
             count += self.check_11(x, y)
         elif x == 0:
             count += self.check_x0(x, y)
