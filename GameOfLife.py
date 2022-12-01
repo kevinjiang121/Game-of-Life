@@ -11,6 +11,7 @@ import sys
 import math
 import numpy as np
 from PlayGame import PlayGame
+from SetGame import SetGame
 import pygame as pg
 
 N = int((1080 - 100) / 20)
@@ -46,39 +47,9 @@ def keep_playing():
 
 class GameOfLife:
     pg.init()
-    pg.font.init()
-    font = pg.font.SysFont('Times New Roman', 75)
-    nextTurn = font.render('Next Round', False, (0, 0, 0))
-
-    rects = []
-    grid = []
     rectPos = [0, 0]
-    SCREEN = pg.display.set_mode((WIDTH - 20, HEIGHT))
-    CLOCK = pg.time.Clock()
-    SCREEN.fill(DEAD)
-    blockSize = 20
-    clear = pg.Rect(0, HEIGHT - 100, 660, 100)
-    next = pg.Rect(660, HEIGHT - 100, 660, 100)
-    auto = pg.Rect(1320, HEIGHT - 100, 660, 100)
-    pg.draw.rect(SCREEN, (0, 0, 0, 0), clear, 3)
-    pg.draw.rect(SCREEN, (0, 0, 0, 0), next, 3)
-    pg.draw.rect(SCREEN, (0, 0, 0, 0), auto, 3)
-    SCREEN.blit(nextTurn, (800, HEIGHT - 100))
-
-    for x in range(0, WIDTH, blockSize):
-        for y in range(0, HEIGHT - 100, blockSize):
-            rect = pg.Rect(x, y, blockSize, blockSize)
-            pg.draw.rect(SCREEN, (0, 0, 0, 0), rect, 1)
-            rects.append(rect)
-
-    widthBlocks = int(WIDTH / blockSize)
-    heightBlocks = int((HEIGHT - 100) / blockSize)
-
-    for i in range(widthBlocks):
-        grid.append([])
-
-    for i in range(len(rects)):
-        grid[i % heightBlocks].append(rects[i])
+    set = SetGame()
+    grid, rects, SCREEN = set.create_board()
 
     while True:
         for event in pg.event.get():
